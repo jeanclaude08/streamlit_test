@@ -1,109 +1,65 @@
-import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget, QVBoxLayout, QHBoxLayout
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
-from insertMenuClass import InserirMenu
-from deleteMenuClass import ApagarMenu
-from viewMenuClass import VisualizarMenu
-from alterMenuClass import AlterarMenu
 import streamlit as st
 
-st.title('Stockly - Gestão de Inventário')
-if st.button('Iniciar'):
-    class MainMenu(QMainWindow):
-        def __init__(self):
-            super().__init__()
-            self.setWindowTitle('Stockly - Gestão de Inventário') 
-            self.setWindowIcon(QIcon('img/icon.png'))  # Definir ícone da janela
-            self.setGeometry(70, 50, 1800, 1000)
+# Funções para cada menu
+def inserir_menu():
+    st.subheader("Inserir Registos")
+    st.write("Aqui podes inserir novos registos no inventário.")
+    # Adiciona os campos de inserção aqui, como textboxes ou selects
+    # Exemplo de um campo:
+    nome_item = st.text_input("Nome do Item")
+    quantidade = st.number_input("Quantidade", min_value=1, max_value=100, step=1)
+    if st.button("Inserir"):
+        st.write(f"Item '{nome_item}' inserido com quantidade {quantidade}.")
 
-            self.centralWidget = QWidget(self)
-            self.setCentralWidget(self.centralWidget)
+def visualizar_menu():
+    st.subheader("Visualizar Registos")
+    st.write("Aqui podes visualizar os registos do inventário.")
+    # Aqui, pode ser necessário integrar com a base de dados ou um arquivo
+    # Exemplo:
+    st.write("Registos disponíveis...")
 
-            # Layout principal horizontal
-            mainLayout = QHBoxLayout(self.centralWidget)
-            mainLayout.setAlignment(Qt.AlignCenter)
+def apagar_menu():
+    st.subheader("Apagar Registos")
+    st.write("Aqui podes apagar registos do inventário.")
+    # Similarmente, podes permitir a pesquisa e a remoção de itens
+    nome_item = st.text_input("Nome do Item a Apagar")
+    if st.button("Apagar"):
+        st.write(f"Item '{nome_item}' apagado.")
 
-            # Layouts verticais para os botões
-            leftLayout = QVBoxLayout()
-            rightLayout = QVBoxLayout()
+def alterar_menu():
+    st.subheader("Alterar Registos")
+    st.write("Aqui podes alterar os registos do inventário.")
+    # Campos para alterar um registo
+    nome_item = st.text_input("Nome do Item a Alterar")
+    nova_quantidade = st.number_input("Nova Quantidade", min_value=1, max_value=100, step=1)
+    if st.button("Alterar"):
+        st.write(f"Item '{nome_item}' alterado para quantidade {nova_quantidade}.")
 
-            leftLayout.setAlignment(Qt.AlignVCenter)
-            rightLayout.setAlignment(Qt.AlignVCenter)
-
-            # Botões
-            self.button1 = QPushButton('INSERIR REGISTOS')
-            self.button2 = QPushButton('VISUALIZAR REGISTOS')
-            self.button3 = QPushButton('APAGAR REGISTOS')
-            self.button4 = QPushButton('ALTERAR REGISTOS')
-
-            # Conectar os botões às funções
-            self.button1.clicked.connect(lambda: self.gotoInserirMenu())
-            self.button2.clicked.connect(lambda: self.gotoVisualizarMenu())
-            self.button3.clicked.connect(lambda: self.gotoApagarMenu())
-            self.button4.clicked.connect(lambda: self.gotoAlterarMenu())
-
-            # Estilo dos botões
-            style = """
-                QPushButton {
-                    font-size: 26px;
-                    font-weight: bold;
-                    padding: 40px;
-                    background-color: #1E2A38;
-                    color: white;
-                    border-radius: 15px;
-                    min-width: 300px;
-                    min-height: 50px; 
-                }
-                QPushButton:hover {
-                    background-color: #2F3E50;
-                }
-            """
-
-            for btn in [self.button1, self.button2, self.button3, self.button4]:
-                btn.setStyleSheet(style)
-            
-            
-            # Adicionar botões aos layouts
-            leftLayout.addWidget(self.button1)
-            leftLayout.addSpacing(120)  # Espaço entre botões
-            leftLayout.addWidget(self.button2)
-
-            rightLayout.addWidget(self.button3)
-            rightLayout.addSpacing(120)
-            rightLayout.addWidget(self.button4)
-
-            # Adicionar os layouts ao layout principal
-            mainLayout.addLayout(leftLayout)
-            mainLayout.addSpacing(450)  # Espaço entre as colunas
-            mainLayout.addLayout(rightLayout)
-
-            self.centralWidget.setLayout(mainLayout)
-
-        def gotoInserirMenu(self):
-            self.inserirMenu = InserirMenu(self)
-            self.inserirMenu.show()
-            self.hide()
-
-        def gotoApagarMenu(self):
-            self.ApagarMenu = ApagarMenu(self)
-            self.ApagarMenu.show()
-            self.hide()
-
-        def gotoVisualizarMenu(self):
-            self.VisualizarMenu = VisualizarMenu(self)
-            self.VisualizarMenu.show()
-            self.hide()
-
-        def gotoAlterarMenu(self):
-            self.AlterarMenu = AlterarMenu(self)
-            self.AlterarMenu.show()
-            self.hide()
-
-    if __name__ == '__main__':
-        app = QApplication(sys.argv)
-        mainWin = MainMenu()
-        mainWin.show()
-        sys.exit(app.exec_())
-st.write("A aplicação foi encerrada.")
+# Função principal que contém o menu inicial
+def main_menu():
+    st.title("Stockly - Gestão de Inventário")
     
+    # Layout com botões
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button('INSERIR REGISTOS'):
+            inserir_menu()
+
+    with col2:
+        if st.button('VISUALIZAR REGISTOS'):
+            visualizar_menu()
+
+    col3, col4 = st.columns(2)
+
+    with col3:
+        if st.button('APAGAR REGISTOS'):
+            apagar_menu()
+
+    with col4:
+        if st.button('ALTERAR REGISTOS'):
+            alterar_menu()
+
+# Função principal
+if __name__ == "__main__":
+    main_menu()
