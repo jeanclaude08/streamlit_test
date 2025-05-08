@@ -1,5 +1,2 @@
-sys
-PyQt5.QtWidgets
-PyQWt5.QtGui
-PyQt5.QtCore
+PyQt5
 streamlit
