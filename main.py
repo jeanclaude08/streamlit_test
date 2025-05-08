@@ -38,7 +38,7 @@ def alterar_menu():
 # Função principal que contém o menu inicial
 def main_menu():
     st.title("Stockly - Gestão de Inventário")
-    st.image('icon.png', use_container_width=True)
+    st.image('icon.png', use_container_width=False)
     
     # Layout com botões
     col1, col2 = st.columns(2)
